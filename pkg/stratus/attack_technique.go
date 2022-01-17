@@ -1,6 +1,7 @@
 package stratus
 
 import (
+	"github.com/datadog/stratus-red-team/internal/providers"
 	"github.com/datadog/stratus-red-team/pkg/stratus/mitreattack"
 )
 
@@ -10,8 +11,8 @@ type AttackTechnique struct {
 	Description                string
 	MitreAttackTactics         []mitreattack.Tactic
 	Platform                   Platform
-	Detonate                   func(terraformOutputs map[string]string) error
-	Cleanup                    func() error
+	Detonate                   func(params map[string]string, provider providers.StratusProvider) error
+	Cleanup                    func(provider providers.StratusProvider) error
 	PrerequisitesTerraformCode []byte
 }
 

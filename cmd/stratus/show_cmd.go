@@ -9,8 +9,9 @@ import (
 
 func buildShowCmd() *cobra.Command {
 	warmupCmd := &cobra.Command{
-		Use:   "show",
-		Short: "Displays detailed information about an attack technique.",
+		Use:     "show",
+		Aliases: []string{"info"},
+		Short:   "Displays detailed information about an attack technique.",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) == 0 {
 				return errors.New("you must specify at least one attack technique")

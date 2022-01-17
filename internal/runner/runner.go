@@ -18,6 +18,7 @@ type Runner struct {
 	ShouldForce      bool
 	TerraformManager TerraformManager
 	StateManager     state.StateManager
+	Provider         providers.StratusProvider
 }
 
 func NewRunner(technique *stratus.AttackTechnique, warmup bool, cleanup bool, force bool) Runner {
@@ -29,6 +30,7 @@ func NewRunner(technique *stratus.AttackTechnique, warmup bool, cleanup bool, fo
 		ShouldForce:      force,
 		TerraformManager: NewTerraformManager(filepath.Join(stateManager.GetRootDirectory(), "terraform")),
 		StateManager:     stateManager,
+		Provider:         providers.NewStratusProvider(),
 	}
 	runner.initialize()
 
@@ -96,7 +98,7 @@ func (m *Runner) Detonate() error {
 		return err
 	}
 	// Detonate
-	err = m.Technique.Detonate(outputs)
+	err = m.Technique.Detonate(outputs, m.Provider)
 	if m.ShouldCleanup {
 		defer func() {
 			err := m.CleanUp()
@@ -123,7 +125,7 @@ func (m *Runner) CleanUp() error {
 
 	// Revert detonation
 	if m.Technique.Cleanup != nil {
-		techniqueCleanupErr = m.Technique.Cleanup()
+		techniqueCleanupErr = m.Technique.Cleanup(m.Provider)
 	}
 
 	// Nuke pre-requisites
@@ -152,7 +154,7 @@ func (m *Runner) ValidatePlatformRequirements() {
 	switch m.Technique.Platform {
 	case stratus.AWS:
 		log.Println("Checking your authentication against the AWS API")
-		if !providers.AWS().IsAuthenticatedAgainstAWS() {
+		if !m.Provider.GetAwsProvider().IsAuthenticated() {
 			log.Fatal("You are not authenticated against AWS, or you have not set your region.")
 		}
 	}

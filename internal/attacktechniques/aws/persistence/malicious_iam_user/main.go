@@ -28,8 +28,8 @@ Detonation: Creates the IAM user and attached 'AdministratorAccess' to it.
 `,
 		Platform:           stratus.AWS,
 		MitreAttackTactics: []mitreattack.Tactic{mitreattack.Persistence},
-		Detonate: func(terraformOutputs map[string]string) error {
-			iamClient := iam.NewFromConfig(providers.AWS().GetConnection())
+		Detonate: func(params map[string]string, provider providers.StratusProvider) error {
+			iamClient := providers.NewAwsProvider().IAMClient()
 			log.Println("Creating a malicious IAM user")
 			_, err := iamClient.CreateUser(context.TODO(), &iam.CreateUserInput{
 				UserName: userName,
@@ -61,8 +61,8 @@ Detonation: Creates the IAM user and attached 'AdministratorAccess' to it.
 
 			return nil
 		},
-		Cleanup: func() error {
-			iamClient := iam.NewFromConfig(providers.AWS().GetConnection())
+		Cleanup: func(provider providers.StratusProvider) error {
+			iamClient := providers.NewAwsProvider().IAMClient()
 			result, err := iamClient.ListAccessKeys(context.Background(), &iam.ListAccessKeysInput{UserName: userName})
 			if err != nil {
 				return errors.New("unable to clean up IAM user access keys: " + err.Error())

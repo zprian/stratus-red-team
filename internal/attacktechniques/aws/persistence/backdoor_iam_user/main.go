@@ -27,8 +27,8 @@ Detonation: Create the access key.
 		Platform:                   stratus.AWS,
 		MitreAttackTactics:         []mitreattack.Tactic{mitreattack.Persistence},
 		PrerequisitesTerraformCode: tf,
-		Detonate: func(terraformOutputs map[string]string) error {
-			iamClient := iam.NewFromConfig(providers.AWS().GetConnection())
+		Detonate: func(params map[string]string, provider providers.StratusProvider) error {
+			iamClient := provider.GetAwsProvider().IAMClient()
 			log.Println("Creating access key on legit IAM user to simulate backdoor")
 			result, err := iamClient.CreateAccessKey(context.Background(), &iam.CreateAccessKeyInput{UserName: aws.String("sample-legit-user")})
 			if err != nil {
@@ -37,8 +37,8 @@ Detonation: Create the access key.
 			log.Println("Successfully created access key " + *result.AccessKey.AccessKeyId)
 			return nil
 		},
-		Cleanup: func() error {
-			iamClient := iam.NewFromConfig(providers.AWS().GetConnection())
+		Cleanup: func(provider providers.StratusProvider) error {
+			iamClient := provider.GetAwsProvider().IAMClient()
 			log.Println("Removing access key from IAM user")
 			result, err := iamClient.ListAccessKeys(context.Background(), &iam.ListAccessKeysInput{UserName: aws.String("sample-legit-user")})
 			if err != nil {

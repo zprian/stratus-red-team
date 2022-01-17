@@ -35,8 +35,8 @@ Detonation: Backdoors the S3 bucket policy.
 	})
 }
 
-func detonate(params map[string]string) error {
-	s3Client := s3.NewFromConfig(providers.AWS().GetConnection())
+func detonate(params map[string]string, provider providers.StratusProvider) error {
+	s3Client := provider.GetAwsProvider().S3Client()
 	bucketName := params["bucket_name"]
 	policy := fmt.Sprintf(backdooredPolicy, bucketName, bucketName)
 

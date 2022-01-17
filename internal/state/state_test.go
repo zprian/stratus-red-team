@@ -1,6 +1,7 @@
 package state
 
 import (
+	"github.com/datadog/stratus-red-team/internal/providers"
 	"github.com/datadog/stratus-red-team/internal/state/mocks"
 	"github.com/datadog/stratus-red-team/pkg/stratus"
 	"github.com/stretchr/testify/assert"
@@ -8,7 +9,7 @@ import (
 	"testing"
 )
 
-func noop(map[string]string) error {
+func noop(map[string]string, providers.StratusProvider) error {
 	return nil
 }
 

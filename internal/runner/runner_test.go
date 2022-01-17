@@ -1,6 +1,7 @@
 package runner
 
 import (
+	"github.com/datadog/stratus-red-team/internal/providers"
 	"github.com/datadog/stratus-red-team/internal/runner/mocks"
 	statemocks "github.com/datadog/stratus-red-team/internal/state/mocks"
 	"github.com/datadog/stratus-red-team/pkg/stratus"
@@ -132,7 +133,7 @@ func TestRunnerDetonate(t *testing.T) {
 	runner := Runner{
 		Technique: &stratus.AttackTechnique{
 			ID: "foo",
-			Detonate: func(map[string]string) error {
+			Detonate: func(map[string]string, providers.StratusProvider) error {
 				wasDetonated = true
 				return nil
 			},
