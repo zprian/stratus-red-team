@@ -36,6 +36,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.10.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.9.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
@@ -43,23 +44,18 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/objx v0.1.1 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	gopkg.in/yaml.v3 v3.0.0 // indirect
 )
 
 require (
-	cloud.google.com/go/storage v1.14.0 // indirect
-	github.com/aws/aws-sdk-go v1.40.56 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
-	github.com/hashicorp/go-getter v1.5.9 // indirect
-	github.com/hashicorp/go-version v1.3.0
+	github.com/hashicorp/go-getter v1.7.5 // indirect
+	github.com/hashicorp/go-version v1.6.0
 	github.com/hashicorp/hc-install v0.3.1
 	github.com/hashicorp/terraform-json v0.13.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
-	github.com/klauspost/compress v1.13.0 // indirect
 	github.com/zclconf/go-cty v1.9.1 // indirect
-	golang.org/x/crypto v0.0.0-20211108221036-ceb1ce70b4fa // indirect
-	golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e // indirect
-	golang.org/x/text v0.3.7 // indirect
-	google.golang.org/api v0.63.0 // indirect
-	google.golang.org/grpc v1.43.0 // indirect
+	golang.org/x/crypto v0.17.0 // indirect
+	golang.org/x/sys v0.15.0 // indirect
+	golang.org/x/text v0.14.0 // indirect
 )
